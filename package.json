@@ -1,0 +1,22 @@
+{
+  "name": "orbital",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "concurrently": "^5.2.0",
+    "contentful": "^7.14.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js",
+    "start": "concurrently \"cd frontend && npm start\" \"npm run server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
