@@ -6,8 +6,6 @@ function allPost () {
 }
  
 function getArticlefeatured (slug,query) {
-  // little trick to get an entry with include
-  // this way all linked items will be resolved for us
   query = query || {}
   query['content_type'] = 'articlesfeatured'
   query['fields.slug'] = slug
@@ -21,8 +19,6 @@ function getArticlefeatureds (query) {
 }
 
 function getArticleReview (slug,query) {
-  // little trick to get an entry with include
-  // this way all linked items will be resolved for us
   query = query || {}
   query['content_type'] = 'albumReview'
   query['fields.slug'] = slug
@@ -36,8 +32,6 @@ function getArticleReviews (query) {
 }
 
 function getArticleArt (slug,query) {
-  // little trick to get an entry with include
-  // this way all linked items will be resolved for us
   query = query || {}
   query['content_type'] = 'articlesart'
   query['fields.slug'] = slug

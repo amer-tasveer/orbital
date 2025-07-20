@@ -2,7 +2,6 @@ var express = require('express')
 var router = express.Router()
 var blogpost = require('../service/blogservice')
 
-/* router params */
 
 router.get('/post/all/', function (req, res, next) {
 

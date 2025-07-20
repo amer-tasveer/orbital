@@ -1,39 +1,37 @@
-
-const express = require('express')
-
-const Blogpost =require('./routes/blogsroutes') 
-
+const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors'); 
+const BlogpostRouter = require('./routes/blogsroutes'); 
 
-const bodyParser =require ('body-parser')
+const app = express();
 
-const cors = require('cors')
+//  Middleware Configuration 
 
+app.use(cors());
 
-const app = express()
-app.use(cors()) 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
 
-app.use('/api/article', Blogpost);
-app.use(express.static(__dirname));
-const port = process.env.PORT || 5000;
+// API Routes
+app.use('/api/article', BlogpostRouter);
 
+// Serve static files in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.resolve(__dirname, './build')));
+    app.use(express.static(path.resolve(__dirname, 'build')));
 
-  app.get('*', function(request, response) {
-    const filePath = path.resolve(__dirname, './build', 'index.html');
-    response.sendFile(filePath);
-  });
+    // For any other GET request not handled by previous middleware/routes,
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+    });
+} else {
+    console.log('Server running in development mode. Frontend served by React Dev Server.');
 }
-app.use(express.static(path.resolve(__dirname, './build')));
 
-app.get('*', function(request, response) {
-  const filePath = path.resolve(__dirname, './build', 'index.html');
-  response.sendFile(filePath);
-});
-  app.listen(port, () => {
+// --- Server Listener ---
+const port = process.env.PORT || 5000; // Use port from environment variable or default to 5000
+
+app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
-    
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });

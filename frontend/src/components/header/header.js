@@ -1,87 +1,57 @@
-import React,{Component} from "react";
-import Landing from "../landing/landing"
-import About from '../about/about'
-import Art from '../blog/post'
-import Featured from '../blog/post_featured'
-import Contact from '../contact/contact'
-import FeaturedList from '../blog/postlist'
-import './header.css'
-import Image from './orbital-pic1.svg'
-import {BrowserRouter as Router,Route,Link,withRouter,useLocation} from'react-router-dom';
-
+import React, { Component } from "react";
+import { Link } from 'react-router-dom';
+import './header.css';
+import Image from './orbital-pic1.svg';
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isSticky: false, 
+        };
+    }
 
-constructor(props){
-    super( props );
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
 
-    this.handleScroll=this.handleScroll.bind(this)
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
 
-}
+    handleScroll = () => {
+        const shouldBeSticky = window.pageYOffset >= 200;
+        if (this.state.isSticky !== shouldBeSticky) {
+            this.setState({ isSticky: shouldBeSticky });
+        }
+    };
 
+    render() {
+        const navbarClasses = `navbar ${this.state.isSticky ? 'sticky sticky-logo' : ''}`;
 
-componentDidMount(){
-    window.addEventListener('scroll', this.handleScroll,true);
-}
+        return (
+            <div>
+                <div className="top-container">
+                    <Link to="/">
+                        <img src={Image} alt="Orbital Blog Logo" /> {/* Added alt text for accessibility */}
+                    </Link>
+                </div>
 
-componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-}
-
-handleScroll(){
-    var navbar = document.getElementById("navbar");
-var sticky = navbar.offsetTop;
-    if (window.pageYOffset >= 200) {
-        navbar.classList.add("sticky")
-        navbar.classList.add("sticky-logo")
-
-      } else {
-        navbar.classList.remove("sticky");
-      }
-}
-
-rendernav(){
-    return (
-        <div>
-            <div class="top-container">
-              <a  href="/" >
-              <img src={Image}/>  
-
-              </a>
-
-</div>
-
-  <div id="navbar">
-    <a  href="/">Home</a>
-    <a href="/featured">Featured</a>
-    <a href="/about">About Us</a>    
-    <a href="/contact">Contact</a>
-  </div>
-  
-  
-        </div>
-          )
-}
-
-render(){
-  return (
-    <Router>
-    {this.rendernav()}
-    
-
-    <Route path='/' exact component={Landing} />
-    <Route path='/articles/:slug' exact component={Art} />
-    <Route path='/featured/:slug' exact component={Featured} />
-    <Route path='/featured/' exact component={FeaturedList} />
-    <Route path='/about' exact component={About} />
-    <Route path='/contact' exact component={Contact} />
-
-
-
-    </Router>
-        )
-}
-  
+                <div id="navbar" className={navbarClasses}>
+                    {/* Use Link components for all navigation items */}
+                    <Link to="/">Home</Link>
+                    <Link to="/featured">Featured</Link>
+                    <Link to="/about">About Us</Link>
+                    <Link to="/contact">Contact</Link>
+                </div>
+                {/*
+                    Removed BrowserRouter and Route components from here.
+                    These should wrap your entire application in App.js
+                    to provide a single routing context.
+                */}
+            </div>
+        );
+    }
 }
 
 export default Header;
